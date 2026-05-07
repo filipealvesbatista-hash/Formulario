@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Formulário de Anamnese — Filipe Alves Nutricionista</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --green:#1a3d2b;--green2:#2d6a4f;--green3:#52b788;--gold:#c9a96e;
+  --cream:#faf8f4;--cream2:#f3efe8;--cream3:#e8e2d8;
+  --text:#1a1a1a;--text2:#555;--text3:#999;
+  --radius:12px;--shadow:0 4px 24px rgba(0,0,0,0.08);
+}
+html{background:var(--cream);min-height:100%}
+body{font-family:'DM Sans',sans-serif;color:var(--text);max-width:560px;margin:0 auto;padding:0 0 60px;min-height:100vh;background:var(--cream)}
+/* HEADER */
+.hdr{background:linear-gradient(160deg,var(--green) 0%,var(--green2) 100%);padding:36px 24px 32px;text-align:center;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:rgba(255,255,255,0.04);border-radius:50%}
+.hdr::after{content:'';position:absolute;bottom:-30px;left:-30px;width:100px;height:100px;background:rgba(255,255,255,0.03);border-radius:50%}
+.hdr-logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:#fff;letter-spacing:.5px;position:relative}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px;letter-spacing:.5px;font-weight:300}
+.hdr-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 12px;margin-top:16px;font-size:11px;color:rgba(255,255,255,0.8);position:relative}
+/* PROGRESS */
+.progress-wrap{padding:16px 24px 0;position:sticky;top:0;background:var(--cream);z-index:10;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-label{font-size:11px;color:var(--text3);font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.progress-count{font-size:11px;color:var(--green2);font-weight:500}
+.progress-bar{height:4px;background:var(--cream3);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green2),var(--green3));border-radius:2px;transition:width .4s ease}
+/* SECTIONS */
+.section{padding:28px 24px 0;animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--green);margin-bottom:4px}
+.section-sub{font-size:12px;color:var(--text3);margin-bottom:20px}
+/* FIELDS */
+.field{margin-bottom:18px}
+.field label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px;letter-spacing:.3px}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--cream3);border-radius:var(--radius);padding:13px 14px;font-size:15px;font-family:'DM Sans',sans-serif;background:#fff;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(45,106,79,0.08)}
+.field textarea{resize:none;line-height:1.6;min-height:90px}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* RADIO GROUP */
+.radio-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.radio-opt{flex:1;min-width:80px}
+.radio-opt input{display:none}
+.radio-opt label{display:block;text-align:center;padding:10px 12px;border:1.5px solid var(--cream3);border-radius:10px;font-size:13px;cursor:pointer;transition:all .2s;background:#fff;color:var(--text2)}
+.radio-opt input:checked+label{border-color:var(--green2);background:rgba(45,106,79,0.07);color:var(--green);font-weight:500}
+/* SCALE */
+.scale-row{display:flex;gap:6px}
+.scale-opt input{display:none}
+.scale-opt label{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:1;border:1.5px solid var(--cream3);border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;background:#fff;color:var(--text3);transition:all .2s}
+.scale-opt input:checked+label{border-color:var(--green2);background:var(--green2);color:#fff}
+/* DIVIDER */
+.divider{height:1px;background:var(--cream3);margin:32px 24px 0}
+/* SUBMIT */
+.submit-wrap{padding:32px 24px 0}
+.submit-note{font-size:12px;color:var(--text3);text-align:center;margin-bottom:16px;line-height:1.6}
+.btn-submit{width:100%;padding:17px;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:none;border-radius:var(--radius);font-size:16px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;letter-spacing:.3px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(26,61,43,0.25)}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,61,43,0.3)}
+.btn-submit:active{transform:translateY(0)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+/* SUCCESS */
+.success{display:none;text-align:center;padding:48px 24px}
+.success-icon{font-size:56px;margin-bottom:16px}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--green);margin-bottom:8px}
+.success-text{font-size:14px;color:var(--text2);line-height:1.7;max-width:320px;margin:0 auto}
+/* LOADING */
+.loading{display:none;text-align:center;padding:20px}
+.spinner{width:28px;height:28px;border:3px solid var(--cream3);border-top-color:var(--green2);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* REQUIRED */
+.req{color:var(--green3);margin-left:2px}
+/* CHAR COUNT */
+.char-hint{font-size:11px;color:var(--text3);margin-top:4px;text-align:right}
+/* ERROR */
+.field.error input,.field.error select,.field.error textarea{border-color:#e24b4a}
+.err-msg{font-size:11px;color:#e24b4a;margin-top:4px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">Filipe Alves</div>
+  <div class="hdr-sub">Nutricionista · CRN7: 10.934</div>
+  <div class="hdr-badge">📋 Formulário de Anamnese</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-header">
+    <span class="progress-label">Seu progresso</span>
+    <span class="progress-count" id="prog-count">0 de 20 campos</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:0%"></div></div>
+</div>
+
+<form id="form" novalidate>
+
+<!-- 1. DADOS PESSOAIS -->
+<div class="section" style="animation-delay:.05s">
+  <div class="section-title">👤 Dados pessoais</div>
+  <div class="section-sub">Essas informações ficam em sigilo absoluto</div>
+  <div class="field" data-track>
+    <label>Nome completo <span class="req">*</span></label>
+    <input type="text" id="nome" placeholder="Seu nome completo" required autocomplete="name"/>
+  </div>
+  <div class="field-row">
+    <div class="field" data-track>
+      <label>Data de nascimento <span class="req">*</span></label>
+      <input type="date" id="nasc" required/>
+    </div>
+    <div class="field" data-track>
+      <label>Sexo <span class="req">*</span></label>
+      <select id="sexo" required>
+        <option value="">Selecionar</option>
+        <option>Feminino</option>
+        <option>Masculino</option>
+        <option>Prefiro não dizer</option>
+      </select>
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field" data-track>
+      <label>Telefone / WhatsApp</label>
+      <input type="tel" id="tel" placeholder="(48) 99999-9999" autocomplete="tel"/>
+    </div>
+    <div class="field" data-track>
+      <label>Profissão</label>
+      <input type="text" id="prof" placeholder="Sua profissão"/>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 2. OBJETIVO -->
+<div class="section" style="animation-delay:.1s">
+  <div class="section-title">🎯 Objetivo</div>
+  <div class="section-sub">O que te trouxe até aqui?</div>
+  <div class="field" data-track>
+    <label>Qual é o seu principal objetivo? <span class="req">*</span></label>
+    <div class="radio-group">
+      <div class="radio-opt"><input type="radio" name="obj" id="obj1" value="Emagrecer"><label for="obj1">⚖️ Emagrecer</label></div>
+      <div class="radio-opt"><input type="radio" name="obj" id="obj2" value="Ganhar massa"><label for="obj2">💪 Ganhar massa</label></div>
+      <div class="radio-opt"><input type="radio" name="obj" id="obj3" value="Saúde hormonal"><label for="obj3">🌸 Saúde hormonal</label></div>
+      <div class="radio-opt"><input type="radio" name="obj" id="obj4" value="Manutenção"><label for="obj4">⚡ Manutenção</label></div>
+    </div>
+  </div>
+  <div class="field" data-track>
+    <label>Descreva melhor o que espera alcançar</label>
+    <textarea id="objetivo-desc" placeholder="Ex: Perder 8kg antes do verão, ter mais energia no dia a dia, regular meu ciclo..."></textarea>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 3. MEDIDAS -->
+<div class="section" style="animation-delay:.12s">
+  <div class="section-title">📏 Medidas</div>
+  <div class="section-sub">Aproximado está ótimo!</div>
+  <div class="field-row">
+    <div class="field" data-track>
+      <label>Peso atual (kg)</label>
+      <input type="number" id="peso" placeholder="Ex: 72" step="0.1" min="30" max="300"/>
+    </div>
+    <div class="field" data-track>
+      <label>Altura (cm)</label>
+      <input type="number" id="altura" placeholder="Ex: 165" min="100" max="220"/>
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field" data-track>
+      <label>Peso desejado (kg)</label>
+      <input type="number" id="peso-obj" placeholder="Ex: 62" step="0.1"/>
+    </div>
+    <div class="field" data-track>
+      <label>Peso máximo que já teve</label>
+      <input type="number" id="peso-max" placeholder="Ex: 85" step="0.1"/>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 4. SAÚDE -->
+<div class="section" style="animation-delay:.14s">
+  <div class="section-title">🏥 Saúde</div>
+  <div class="section-sub">Seja sincero(a) — essas informações nos ajudam muito</div>
+  <div class="field" data-track>
+    <label>Tem alguma doença diagnosticada?</label>
+    <input type="text" id="doencas" placeholder="Ex: Hipotireoidismo, diabetes, SOP, hipertensão... ou Nenhuma"/>
+  </div>
+  <div class="field" data-track>
+    <label>Toma algum medicamento regularmente?</label>
+    <textarea id="meds" rows="2" placeholder="Ex: Levotiroxina 50mcg pela manhã, anticoncepcional... ou Nenhum"></textarea>
+  </div>
+  <div class="field" data-track>
+    <label>Tem histórico familiar de alguma doença?</label>
+    <input type="text" id="familia" placeholder="Ex: Diabetes, pressão alta, câncer... ou Nenhum"/>
+  </div>
+  <div class="field" data-track>
+    <label>Sua principal queixa hoje é:</label>
+    <textarea id="queixa" placeholder="Ex: Não consigo emagrecer mesmo me esforçando, muita fadiga, inchaço constante..."></textarea>
+  </div>
+  <div class="field" data-track>
+    <label>Como está seu intestino?</label>
+    <div class="radio-group">
+      <div class="radio-opt"><input type="radio" name="intestino" id="int1" value="Normal"><label for="int1">Normal</label></div>
+      <div class="radio-opt"><input type="radio" name="intestino" id="int2" value="Preso"><label for="int2">Preso</label></div>
+      <div class="radio-opt"><input type="radio" name="intestino" id="int3" value="Solto"><label for="int3">Solto</label></div>
+      <div class="radio-opt"><input type="radio" name="intestino" id="int4" value="Alterna"><label for="int4">Alterna</label></div>
+    </div>
+  </div>
+  <div class="field" data-track>
+    <label>Quantas horas você dorme por noite?</label>
+    <div class="radio-group">
+      <div class="radio-opt"><input type="radio" name="sono" id="s1" value="Menos de 5h"><label for="s1">Menos de 5h</label></div>
+      <div class="radio-opt"><input type="radio" name="sono" id="s2" value="5 a 6h"><label for="s2">5 a 6h</label></div>
+      <div class="radio-opt"><input type="radio" name="sono" id="s3" value="7 a 8h"><label for="s3">7 a 8h</label></div>
+      <div class="radio-opt"><input type="radio" name="sono" id="s4" value="Mais de 8h"><label for="s4">Mais de 8h</label></div>
+    </div>
+  </div>
+  <div class="field" data-track>
+    <label>Nível de estresse no dia a dia</label>
+    <div class="radio-group" style="max-width:280px">
+      <div class="scale-opt" style="flex:1"><input type="radio" name="stress" id="st1" value="Baixo"><label for="st1" style="display:flex;align-items:center;justify-content:center;padding:10px;border:1.5px solid var(--cream3);border-radius:8px;font-size:13px;cursor:pointer;background:#fff;transition:all .2s">😌 Baixo</label></div>
+      <div class="scale-opt" style="flex:1"><input type="radio" name="stress" id="st2" value="Moderado"><label for="st2" style="display:flex;align-items:center;justify-content:center;padding:10px;border:1.5px solid var(--cream3);border-radius:8px;font-size:13px;cursor:pointer;background:#fff;transition:all .2s">😐 Médio</label></div>
+      <div class="scale-opt" style="flex:1"><input type="radio" name="stress" id="st3" value="Alto"><label for="st3" style="display:flex;align-items:center;justify-content:center;padding:10px;border:1.5px solid var(--cream3);border-radius:8px;font-size:13px;cursor:pointer;background:#fff;transition:all .2s">😤 Alto</label></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 5. ALIMENTAÇÃO -->
+<div class="section" style="animation-delay:.16s">
+  <div class="section-title">🍽️ Alimentação</div>
+  <div class="section-sub">Sem julgamentos — seja honesto(a)!</div>
+  <div class="field" data-track>
+    <label>Tem alergia ou intolerância alimentar?</label>
+    <input type="text" id="alerg" placeholder="Ex: Lactose, glúten, frutos do mar... ou Nenhuma"/>
+  </div>
+  <div class="field" data-track>
+    <label>Quais alimentos você não gosta?</label>
+    <input type="text" id="naogosta" placeholder="Ex: Peixe, fígado, beterraba..."/>
+  </div>
+  <div class="field" data-track>
+    <label>Quantos litros de água bebe por dia?</label>
+    <div class="radio-group">
+      <div class="radio-opt"><input type="radio" name="agua" id="ag1" value="Menos de 1L"><label for="ag1">Menos de 1L</label></div>
+      <div class="radio-opt"><input type="radio" name="agua" id="ag2" value="1 a 2L"><label for="ag2">1 a 2L</label></div>
+      <div class="radio-opt"><input type="radio" name="agua" id="ag3" value="2 a 3L"><label for="ag3">2 a 3L</label></div>
+      <div class="radio-opt"><input type="radio" name="agua" id="ag4" value="Mais de 3L"><label for="ag4">Mais de 3L</label></div>
+    </div>
+  </div>
+  <div class="field" data-track>
+    <label>Descreva o que você come em um dia comum <span class="req">*</span></label>
+    <textarea id="dah" rows="4" placeholder="Café da manhã: ...&#10;Almoço: ...&#10;Lanche: ...&#10;Jantar: ...&#10;&#10;(Seja detalhado — isso é muito importante!)" required></textarea>
+    <div class="char-hint" id="dah-hint">0 caracteres</div>
+  </div>
+  <div class="field" data-track>
+    <label>O que costuma comer diferente nos fins de semana?</label>
+    <textarea id="fds" rows="2" placeholder="Ex: Churrasco, pizza, mais doces, bebo mais..."></textarea>
+  </div>
+  <div class="field" data-track>
+    <label>Toma algum suplemento atualmente?</label>
+    <input type="text" id="supl" placeholder="Ex: Whey, creatina, ômega-3, vitamina D... ou Nenhum"/>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 6. EXERCÍCIO -->
+<div class="section" style="animation-delay:.18s">
+  <div class="section-title">🏃 Atividade física</div>
+  <div class="section-sub">Qualquer atividade conta!</div>
+  <div class="field" data-track>
+    <label>Pratica exercício regularmente?</label>
+    <div class="radio-group">
+      <div class="radio-opt"><input type="radio" name="ex" id="ex1" value="Sim"><label for="ex1">✅ Sim</label></div>
+      <div class="radio-opt"><input type="radio" name="ex" id="ex2" value="Não"><label for="ex2">❌ Não</label></div>
+      <div class="radio-opt"><input type="radio" name="ex" id="ex3" value="Às vezes"><label for="ex3">⚡ Às vezes</label></div>
+    </div>
+  </div>
+  <div class="field" data-track>
+    <label>Se sim, descreva os exercícios</label>
+    <input type="text" id="exdet" placeholder="Ex: Musculação 4x/sem 60min + caminhada 3x/sem 30min"/>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- 7. INFORMAÇÃO EXTRA -->
+<div class="section" style="animation-delay:.2s">
+  <div class="section-title">✍️ Informações extras</div>
+  <div class="section-sub">Tem algo mais que gostaria de contar?</div>
+  <div class="field" data-track>
+    <label>Tudo que achar importante para eu saber</label>
+    <textarea id="extra" rows="3" placeholder="Ex: Já fiz cirurgia bariátrica, tenho ansiedade, tomo anticoncepcional, estou amamentando..."></textarea>
+  </div>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-wrap">
+  <div class="submit-note">Ao enviar, suas respostas chegam diretamente ao Nutr. Filipe Alves antes da sua consulta. Seus dados são sigilosos e protegidos.</div>
+  <button type="submit" class="btn-submit" id="submit-btn">Enviar formulário →</button>
+</div>
+
+</form>
+
+<!-- SUCCESS -->
+<div class="success" id="success-screen">
+  <div class="success-icon">🎉</div>
+  <div class="success-title">Formulário enviado!</div>
+  <div class="success-text">Suas respostas chegaram para o Nutr. Filipe Alves.<br><br>Você pode fechar essa página. Até breve na consulta! 😊</div>
+</div>
+
+<script>
+// ===== CONFIG =====
+// O JSONBIN_KEY e BIN_ID são inseridos pelo Copiloto ao gerar o link
+const PARAMS = new URLSearchParams(window.location.search);
+const JSONBIN_KEY = PARAMS.get('k') || '';
+const BIN_ID      = PARAMS.get('b') || '';
+const PATIENT_SLOT = PARAMS.get('s') || uid();
+
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
+
+// ===== PROGRESS =====
+const tracked = document.querySelectorAll('[data-track]');
+function updateProgress(){
+  let filled = 0;
+  document.querySelectorAll('input[data-track], select[data-track], textarea[data-track]').forEach(el=>{if(el.value.trim())filled++;});
+  // Also count radio groups
+  ['obj','intestino','sono','stress','agua','ex'].forEach(name=>{
+    if(document.querySelector(`input[name="${name}"]:checked`))filled++;
+  });
+  const total = tracked.length;
+  const pct = Math.min(100, Math.round((filled/total)*100));
+  document.getElementById('prog-bar').style.width = pct+'%';
+  document.getElementById('prog-count').textContent = filled+' de '+total+' campos';
+}
+document.querySelectorAll('input,select,textarea').forEach(el=>{el.addEventListener('input',updateProgress);el.addEventListener('change',updateProgress);});
+
+// ===== CHAR COUNT =====
+document.getElementById('dah').addEventListener('input',function(){
+  document.getElementById('dah-hint').textContent = this.value.length + ' caracteres';
+});
+
+// ===== SUBMIT =====
+document.getElementById('form').addEventListener('submit', async function(e){
+  e.preventDefault();
+
+  // Validation
+  const required = [{id:'nome',label:'Nome'},{id:'nasc',label:'Data de nascimento'},{id:'sexo',label:'Sexo'},{id:'dah',label:'Dia alimentar habitual'}];
+  let ok = true;
+  required.forEach(r=>{
+    const el = document.getElementById(r.id);
+    el.closest('.field').classList.remove('error');
+    if(!el.value.trim()){el.closest('.field').classList.add('error');ok=false;}
+  });
+  if(!document.querySelector('input[name="obj"]:checked')){ok=false;}
+  if(!ok){
+    document.querySelector('.field.error')?.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  const data = {
+    _submittedAt: new Date().toISOString(),
+    _slot: PATIENT_SLOT,
+    nome: v('nome'), nasc: v('nasc'), sexo: v('sexo'), tel: v('tel'), prof: v('prof'),
+    objetivo: rv('obj'), 'objetivo-desc': v('objetivo-desc'),
+    peso: v('peso'), altura: v('altura'), 'peso-obj': v('peso-obj'), 'peso-max': v('peso-max'),
+    doencas: v('doencas'), meds: v('meds'), familia: v('familia'), queixa: v('queixa'),
+    intestino: rv('intestino'), sono: rv('sono'), stress: rv('stress'),
+    alerg: v('alerg'), naogosta: v('naogosta'), agua: rv('agua'),
+    dah: v('dah'), fds: v('fds'), supl: v('supl'),
+    ex: rv('ex'), exdet: v('exdet'), extra: v('extra')
+  };
+
+  try {
+    if(JSONBIN_KEY && BIN_ID){
+      // GET current bin, add this response, PUT back
+      const getRes = await fetch('https://api.jsonbin.io/v3/b/'+BIN_ID+'/latest',{headers:{'X-Access-Key':JSONBIN_KEY}});
+      const current = await getRes.json();
+      const resps = current.record?.responses || [];
+      resps.push(data);
+      await fetch('https://api.jsonbin.io/v3/b/'+BIN_ID,{
+        method:'PUT',
+        headers:{'Content-Type':'application/json','X-Access-Key':JSONBIN_KEY},
+        body: JSON.stringify({responses: resps})
+      });
+    } else {
+      // Fallback: just wait 1s (demo mode)
+      await new Promise(r=>setTimeout(r,1000));
+    }
+
+    document.getElementById('form').style.display = 'none';
+    document.querySelector('.progress-wrap').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+    window.scrollTo(0,0);
+  } catch(err){
+    btn.disabled = false;
+    btn.textContent = 'Enviar formulário →';
+    alert('Erro ao enviar. Por favor tente novamente.\n\n'+err.message);
+  }
+});
+
+function v(id){return document.getElementById(id)?.value?.trim()||'';}
+function rv(name){return document.querySelector(`input[name="${name}"]:checked`)?.value||'';}
+
+// Style radio buttons on click
+document.querySelectorAll('.scale-opt input').forEach(inp=>{
+  inp.addEventListener('change',function(){
+    document.querySelectorAll(`input[name="${this.name}"]`).forEach(o=>{
+      const lbl=o.nextElementSibling;
+      lbl.style.borderColor=o.checked?'var(--green2)':'var(--cream3)';
+      lbl.style.background=o.checked?'var(--green2)':'#fff';
+      lbl.style.color=o.checked?'#fff':'var(--text2)';
+    });
+    updateProgress();
+  });
+});
+</script>
+</body>
+</html>
