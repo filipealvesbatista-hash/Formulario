@@ -385,18 +385,40 @@ document.getElementById('form').addEventListener('submit', async function(e){
 
   try {
     if(JSONBIN_KEY && BIN_ID){
-      // GET current bin, add this response, PUT back
-      const getRes = await fetch('https://api.jsonbin.io/v3/b/'+BIN_ID+'/latest',{headers:{'X-Access-Key':JSONBIN_KEY}});
-      const current = await getRes.json();
-      const resps = current.record?.responses || [];
-      resps.push(data);
-      await fetch('https://api.jsonbin.io/v3/b/'+BIN_ID,{
-        method:'PUT',
-        headers:{'Content-Type':'application/json','X-Access-Key':JSONBIN_KEY},
-        body: JSON.stringify({responses: resps})
+      // Step 1: GET current bin
+      const getRes = await fetch('https://api.jsonbin.io/v3/b/'+BIN_ID+'/latest',{
+        method:'GET',
+        headers:{
+          'X-Access-Key': JSONBIN_KEY,
+          'X-Bin-Meta': 'false'
+        }
       });
+      
+      if(!getRes.ok){
+        const errText = await getRes.text();
+        throw new Error('Erro ao ler bin ('+getRes.status+'): '+errText.slice(0,100));
+      }
+      
+      const current = await getRes.json();
+      const resps = current.responses || current.record?.responses || [];
+      resps.push(data);
+      
+      // Step 2: PUT updated data back
+      const putRes = await fetch('https://api.jsonbin.io/v3/b/'+BIN_ID,{
+        method:'PUT',
+        headers:{
+          'Content-Type': 'application/json',
+          'X-Access-Key': JSONBIN_KEY
+        },
+        body: JSON.stringify({responses: resps, copiloto_pts: current.copiloto_pts || current.record?.copiloto_pts || {}})
+      });
+      
+      if(!putRes.ok){
+        const errText = await putRes.text();
+        throw new Error('Erro ao salvar ('+putRes.status+'): '+errText.slice(0,100));
+      }
     } else {
-      // Fallback: just wait 1s (demo mode)
+      // Demo mode - sem configuração
       await new Promise(r=>setTimeout(r,1000));
     }
 
@@ -407,11 +429,19 @@ document.getElementById('form').addEventListener('submit', async function(e){
   } catch(err){
     btn.disabled = false;
     btn.textContent = 'Enviar formulário →';
-    alert('Erro ao enviar. Por favor tente novamente.\n\n'+err.message);
+    // Show detailed error
+    alert('Erro ao enviar:\n\n'+err.message+'\n\nVerifique se o link foi gerado corretamente pelo Copiloto.');
+    console.error('Erro submit:', err);
   }
 });
 
 function v(id){return document.getElementById(id)?.value?.trim()||'';}
+
+// Debug: log params on load
+console.log('Formulário carregado');
+console.log('BIN_ID:', BIN_ID ? BIN_ID.slice(0,8)+'...' : 'NÃO CONFIGURADO');
+console.log('KEY:', JSONBIN_KEY ? JSONBIN_KEY.slice(0,8)+'...' : 'NÃO CONFIGURADO');
+console.log('SLOT:', PATIENT_SLOT);
 function rv(name){return document.querySelector(`input[name="${name}"]:checked`)?.value||'';}
 
 // Style radio buttons on click
